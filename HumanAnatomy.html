@@ -3,49 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <title>Human Biology Quiz (Grade 7–10)</title>
+
   <style>
+    /* ===== PAGE BACKGROUND ===== */
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
+      background-color: #f4f6f8; /* soft classroom gray */
     }
+
+    /* ===== QUIZ CARD ===== */
+    #start-screen,
+    #quiz-screen,
+    #result-screen {
+      background: white;
+      padding: 25px;
+      max-width: 700px;
+      margin: 40px auto;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2, h3 {
+      text-align: center;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      width: 80%;
+      max-width: 300px;
+    }
+
     .hidden {
       display: none;
     }
+
     .choice {
       display: block;
-      margin: 8px 0;
+      margin: 10px 0;
+      cursor: pointer;
     }
+
     button {
       margin-top: 15px;
-      padding: 10px 15px;
+      padding: 10px 20px;
       cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #1976d2;
+      color: white;
+      font-size: 15px;
+    }
+
+    button:hover {
+      background-color: #125aa0;
+    }
+
+    hr {
+      margin: 20px 0;
     }
   </style>
 </head>
+
 <body>
 
 <h1>Human Biology Quiz (Grade 7–10)</h1>
 
+<!-- ===== START SCREEN ===== -->
 <div id="start-screen">
-  <input type="text" id="studentName" placeholder="Enter your name">
-  <br><br>
-  <button onclick="startQuiz()">Start Quiz</button>
+  <p style="text-align:center;">Enter your name to begin</p>
+  <center>
+    <input type="text" id="studentName" placeholder="Enter your name">
+    <br><br>
+    <button onclick="startQuiz()">Start Quiz</button>
+  </center>
 </div>
 
+<!-- ===== QUIZ SCREEN ===== -->
 <div id="quiz-screen" class="hidden">
   <h3 id="question-text"></h3>
   <div id="choices"></div>
   <button onclick="nextQuestion()">Next</button>
 </div>
 
+<!-- ===== RESULT SCREEN ===== -->
 <div id="result-screen" class="hidden">
   <h2>Quiz Completed ✅</h2>
-  <p id="final-score"></p>
+  <p id="final-score" style="text-align:center;"></p>
   <h3>Item Analysis</h3>
   <div id="analysis"></div>
 </div>
 
-<!-- ✅ JAVASCRIPT MUST BE INSIDE SCRIPT TAGS -->
+<!-- ===== JAVASCRIPT ===== -->
 <script>
 let currentIndex = 0;
 let score = 0;
@@ -57,8 +106,786 @@ const questions = [
     choices: ["Appendicitis", "Bulimia", "Diarrhea", "Hepatitis"],
     correct: "Hepatitis",
     analysis: {
-      correct: "Hepatitis is an infection of the liver.",
+      correct: "Hepatitis is an inflammation of the liver commonly caused by viral infection.",
+      wrong: "Appendicitis affects the appendix, bulimia is an eating disorder, and diarrhea is a digestive condition."
+    }
+  },
+  {
+    question: "It is the inflammation of the lining of the stomach.",
+    choices: ["Appendicitis", "Bulimia", "Diarrhea", "Gastritis"],
+    correct: "Gastritis",
+    analysis: {
+      correct: "Gastritis refers to inflammation of the stomach lining.",
       wrong: "The other options involve different organs or conditions."
+    }
+  },
+  {
+    question: "It is the increase in the frequency of loose, watery stools compared to normal.",
+    choices: ["Appendicitis", "Bulimia", "Diarrhea", "Hepatitis"],
+    correct: "Diarrhea",
+    analysis: {
+      correct: "Diarrhea is characterized by frequent, loose, watery stools.",
+      wrong: "The other choices are not defined by loose stools."
+    }
+  },
+  {
+    question: "It is an eating disorder characterized by binge eating followed by purging.",
+    choices: ["Appendicitis", "Bulimia", "Diarrhea", "Hepatitis"],
+    correct: "Bulimia",
+    analysis: {
+      correct: "Bulimia involves binge eating followed by purging behaviors.",
+      wrong: "The other choices are medical conditions, not eating disorders."
+    }
+  },
+  {
+    question: "It is a condition in which the small pouch-like organ attached to the large intestine becomes inflamed.",
+    choices: ["Appendicitis", "Bulimia", "Diarrhea", "Gastritis"],
+    correct: "Appendicitis",
+    analysis: {
+      correct: "Appendicitis is the inflammation of the appendix.",
+      wrong: "The other options involve different organs."
+    }
+  },
+  {
+    question: "It is the excessive production of urine resulting in frequent urination.",
+    choices: ["Kidney stones", "UTI", "Kidney failure", "Polyuria"],
+    correct: "Polyuria",
+    analysis: {
+      correct: "Polyuria refers to the production of unusually large volumes of urine.",
+      wrong: "The other choices are kidney-related disorders but do not primarily cause excessive urination."
+    }
+  },
+  {
+    question: "It is the infection of the urinary tract caused by bacteria.",
+    choices: ["Kidney stones", "UTI", "Kidney failure", "Uremia"],
+    correct: "UTI",
+    analysis: {
+      correct: "UTI stands for urinary tract infection caused by bacteria.",
+      wrong: "The other conditions are not infections of the urinary tract."
+    }
+  },
+  {
+    question: "It is the buildup of waste products in the blood due to kidney dysfunction.",
+    choices: ["Kidney stones", "UTI", "Kidney failure", "Uremia"],
+    correct: "Uremia",
+    analysis: {
+      correct: "Uremia occurs when wastes accumulate in the blood due to kidney failure.",
+      wrong: "The other options describe different kidney conditions."
+    }
+  },
+  {
+    question: "It is the formation of hard mineral and salt deposits in the kidneys.",
+    choices: ["Kidney stones", "UTI", "Kidney failure", "Polyuria"],
+    correct: "Kidney stones",
+    analysis: {
+      correct: "Kidney stones are hard deposits formed from minerals and salts.",
+      wrong: "The other conditions do not involve mineral deposits."
+    }
+  },
+  {
+    question: "It is the inability of the kidneys to adequately filter waste and regulate fluid balance.",
+    choices: ["Kidney stones", "UTI", "Kidney failure", "Uremia"],
+    correct: "Kidney failure",
+    analysis: {
+      correct: "Kidney failure occurs when the kidneys can no longer perform their filtering functions.",
+      wrong: "Uremia is a result of kidney failure, not the cause."
+    }
+  },
+  {
+    question: "Find the relationship between the two given pairs of words. Skin : sweating  Kidneys : ____",
+    choices: ["Defecation", "Respiration", "Urination", "Transpiration"],
+    correct: "Urination",
+    analysis: {
+      correct: "The skin removes waste through sweating, while the kidneys remove waste through urination.",
+      wrong: "Defecation, respiration, and transpiration are not primary kidney functions."
+    }
+  },
+  {
+    question: "Find the relationship between the two given pairs of words. Filtration : plasma-like filtrate  Secretion : ____",
+    choices: ["Water", "Blood", "Carbon dioxide", "Urine"],
+    correct: "Urine",
+    analysis: {
+      correct: "Secretion adds substances to the filtrate, resulting in urine formation.",
+      wrong: "Water and blood are components, while carbon dioxide is excreted by the lungs."
+    }
+  },
+  {
+    question: "Find the relationship between the two given pairs of words. More or less 2% of urine : urea  More or less 96% of urine : ____",
+    choices: ["Blood", "Uric acid", "Water", "Plasma"],
+    correct: "Water",
+    analysis: {
+      correct: "Urine is composed mostly of water (about 96%).",
+      wrong: "Urea and uric acid are present in smaller amounts; plasma is found in blood."
+    }
+  },
+  {
+    question: "What is the primary function of the excretory system in the human body?",
+    choices: ["To circulate blood", "To eliminate waste products", "To digest food", "To absorb nutrients"],
+    correct: "To eliminate waste products",
+    analysis: {
+      correct: "The main role of the excretory system is removing waste from the body.",
+      wrong: "Circulation, digestion, and absorption are functions of other systems."
+    }
+  },
+  {
+    question: "Which organs are primarily involved in the excretory system?",
+    choices: [
+      "Heart and lungs",
+      "Kidneys, lungs, liver, skin, and large intestine",
+      "Stomach and intestines",
+      "Brain and spinal cord"
+    ],
+    correct: "Kidneys, lungs, liver, skin, and large intestine",
+    analysis: {
+      correct: "These organs work together to remove different types of waste from the body.",
+      wrong: "The other options list organs from different body systems."
+    }
+  },
+  {
+    question: "How do kidneys filter waste from the blood?",
+    choices: [
+      "Through digestion",
+      "By reabsorbing all substances",
+      "Through filtration, reabsorption, and secretion",
+      "By directly excreting toxins"
+    ],
+    correct: "Through filtration, reabsorption, and secretion",
+    analysis: {
+      correct: "These three processes occur in the nephrons of the kidneys.",
+      wrong: "Digestion and direct excretion do not describe kidney function."
+    }
+  },
+  {
+    question: "What substances do the kidneys primarily excrete?",
+    choices: [
+      "Water and glucose",
+      "Oxygen and carbon dioxide",
+      "Urea, uric acid, and creatinine",
+      "Vitamins and minerals"
+    ],
+    correct: "Urea, uric acid, and creatinine",
+    analysis: {
+      correct: "These are nitrogenous wastes removed from the blood by the kidneys.",
+      wrong: "The other options include substances needed by the body."
+    }
+  },
+  {
+    question: "Why is it important for the body to remove waste products?",
+    choices: [
+      "To gain energy",
+      "To maintain homeostasis",
+      "To increase body weight",
+      "To stimulate growth"
+    ],
+    correct: "To maintain homeostasis",
+    analysis: {
+      correct: "Removing waste helps keep internal conditions stable.",
+      wrong: "The other options are not related to waste removal."
+    }
+  },
+  {
+    question: "What is the first major step in the human digestive process that involves placing food into the mouth?",
+    choices: ["Absorption", "Ingestion", "Digestion", "Propulsion"],
+    correct: "Ingestion",
+    analysis: {
+      correct: "Ingestion is the act of taking food into the mouth.",
+      wrong: "The other steps occur after food enters the body."
+    }
+  },
+  {
+    question: "Which organ is responsible for the majority of nutrient absorption in the human digestive system?",
+    choices: ["Stomach", "Large intestine", "Small intestine", "Esophagus"],
+    correct: "Small intestine",
+    analysis: {
+      correct: "Most nutrient absorption occurs in the small intestine.",
+      wrong: "The other organs have different digestive roles."
+    }
+  },
+  {
+    question: "The site where ingestion occurs.",
+    choices: ["Liver", "Large intestine", "Mouth", "Pancreas"],
+    correct: "Mouth",
+    analysis: {
+      correct: "Ingestion is the process of taking food into the body, which occurs in the mouth.",
+      wrong: "The other organs are involved in digestion or absorption, not ingestion."
+    }
+  },
+  {
+    question: "What type of movement is primarily responsible for pushing food through the esophagus to the stomach?",
+    choices: ["Churning", "Segmentation", "Peristalsis", "Mastication"],
+    correct: "Peristalsis",
+    analysis: {
+      correct: "Peristalsis is the wave-like muscular contraction that moves food through the esophagus.",
+      wrong: "Churning and segmentation occur in the stomach and intestines; mastication is chewing."
+    }
+  },
+  {
+    question: "The organ that can maximize absorption of nutrients due to the presence of villi and microvilli.",
+    choices: ["Liver", "Small intestine", "Mouth", "Pancreas"],
+    correct: "Small intestine",
+    analysis: {
+      correct: "The small intestine has villi and microvilli that greatly increase surface area for absorption.",
+      wrong: "The other organs do not have structures specialized for nutrient absorption."
+    }
+  },
+  {
+    question: "The organ that produces bile to emulsify fats.",
+    choices: ["Liver", "Small intestine", "Mouth", "Pancreas"],
+    correct: "Liver",
+    analysis: {
+      correct: "The liver produces bile, which helps break down fats into smaller droplets.",
+      wrong: "The gallbladder stores bile, but the liver produces it."
+    }
+  },
+  {
+    question: "The sites where proteins can be digested.",
+    choices: [
+      "Stomach and small intestine",
+      "Small intestine and large intestine",
+      "Mouth and esophagus",
+      "Stomach and liver"
+    ],
+    correct: "Stomach and small intestine",
+    analysis: {
+      correct: "Protein digestion begins in the stomach and continues in the small intestine.",
+      wrong: "The other organs do not digest proteins."
+    }
+  },
+  {
+    question: "The organ that cannot facilitate wave-like contractions to assist food mass down the gastrointestinal tract.",
+    choices: ["Stomach", "Mouth", "Small intestine", "Esophagus"],
+    correct: "Mouth",
+    analysis: {
+      correct: "The mouth does not perform peristalsis; it only performs ingestion and chewing.",
+      wrong: "The stomach, esophagus, and intestines use peristaltic movement."
+    }
+  },
+  {
+    question: "Which organ is responsible for the majority of nutrient absorption in the human digestive system?",
+    choices: ["Stomach", "Large intestine", "Small intestine", "Esophagus"],
+    correct: "Small intestine",
+    analysis: {
+      correct: "Most nutrients are absorbed in the small intestine due to its large surface area.",
+      wrong: "The stomach digests food, while the large intestine mainly absorbs water."
+    }
+  },
+  {
+    question: "The mixing and grinding action of the stomach, which creates a smooth mixture of food and digestive juices, is referred to as what?",
+    choices: ["Absorption", "Churning", "Ingestion", "Segmentation"],
+    correct: "Churning",
+    analysis: {
+      correct: "Churning mechanically breaks down food and mixes it with gastric juices.",
+      wrong: "The other terms refer to different digestive processes."
+    }
+  },
+  {
+    question: "What is the function of the pyloric sphincter in the digestive process?",
+    choices: [
+      "To absorb nutrients",
+      "To mix food with digestive juices",
+      "To release chyme into the small intestine",
+      "To initiate swallowing"
+    ],
+    correct: "To release chyme into the small intestine",
+    analysis: {
+      correct: "The pyloric sphincter controls the movement of chyme from the stomach to the small intestine.",
+      wrong: "The other choices describe functions of different digestive structures."
+    }
+  },
+  {
+    question: "What is the functional unit of the kidney?",
+    choices: ["Nephron", "Glomerulus", "Henle's loop", "Collecting tubule"],
+    correct: "Nephron",
+    analysis: {
+      correct: "The nephron is the basic structural and functional unit of the kidney.",
+      wrong: "The other choices are parts of the nephron, not the whole unit."
+    }
+  },
+  {
+    question: "Which of the following best describes the function of the respiratory system?",
+    choices: [
+      "To absorb nutrients from food",
+      "To protect the body from infection",
+      "To exchange gases with the environment",
+      "To respond to stimuli in the environment"
+    ],
+    correct: "To exchange gases with the environment",
+    analysis: {
+      correct: "The respiratory system allows oxygen to enter the body and removes carbon dioxide.",
+      wrong: "The other options describe functions of other body systems."
+    }
+  },
+  {
+    question: "Which of the following is the function of the respiratory system?",
+    choices: [
+      "To give shape and support to the body",
+      "To exchange gases between the external environment and the lungs",
+      "To exchange gases between the external environment and the diaphragm",
+      "To break down foods into absorbable size"
+    ],
+    correct: "To exchange gases between the external environment and the lungs",
+    analysis: {
+      correct: "Gas exchange occurs in the lungs through structures like the alveoli.",
+      wrong: "The diaphragm assists breathing but does not exchange gases."
+    }
+  },
+  {
+    question: "What happens when you inhale?",
+    choices: [
+      "The diaphragm expands and moves upward, chest space decreases, and lungs contract",
+      "The diaphragm contracts and moves downward, chest space increases, and lungs expand",
+      "The diaphragm expands and moves forward, chest space increases, and lungs contract",
+      "The diaphragm contracts and moves backward, chest space decreases, and lungs move upward"
+    ],
+    correct: "The diaphragm contracts and moves downward, chest space increases, and lungs expand",
+    analysis: {
+      correct: "During inhalation, the diaphragm contracts, increasing chest volume so air enters the lungs.",
+      wrong: "The other choices describe incorrect diaphragm movement."
+    }
+  },
+  {
+    question: "Which structure serves as the entrance of air into your body?",
+    choices: ["Trachea", "Esophagus", "Alveolus", "Nose"],
+    correct: "Nose",
+    analysis: {
+      correct: "Air enters the respiratory system primarily through the nose.",
+      wrong: "The trachea and alveoli are internal air passages."
+    }
+  },
+  {
+    question: "Air can enter the body and travel to the lungs through the ______.",
+    choices: [
+      "mouth and nose",
+      "esophagus and gullet",
+      "windpipe and pores",
+      "nose"
+    ],
+    correct: "nose",
+    analysis: {
+      correct: "The nose is the primary entry point of air into the respiratory system.",
+      wrong: "The esophagus is for food, not air."
+    }
+  },
+  {
+    question: "What is the purpose of the little hairs inside the nose?",
+    choices: [
+      "To fight disease-causing germs",
+      "To warm the incoming air",
+      "To filter dust particles from the inhaled air",
+      "To disinfect the incoming air"
+    ],
+    correct: "To filter dust particles from the inhaled air",
+    analysis: {
+      correct: "Nasal hairs trap dust and other particles to protect the lungs.",
+      wrong: "They do not disinfect or directly kill germs."
+    }
+  },
+  {
+    question: "What is the respiratory system?",
+    choices: [
+      "The body's breathing system",
+      "The body's system of nerves",
+      "The body's food-processing system",
+      "The body's blood-transporting system"
+    ],
+    correct: "The body's breathing system",
+    analysis: {
+      correct: "The respiratory system is responsible for breathing and gas exchange.",
+      wrong: "The other choices describe different body systems."
+    }
+  },
+  {
+    question: "What is the circulatory system?",
+    choices: [
+      "The body's breathing system",
+      "The body's system of nerves",
+      "The body's food-processing system",
+      "The body's blood-transporting system"
+    ],
+    correct: "The body's blood-transporting system",
+    analysis: {
+      correct: "The circulatory system transports blood, oxygen, and nutrients throughout the body.",
+      wrong: "Breathing, digestion, and nerve signaling belong to other systems."
+    }
+  },
+  {
+    question: "What is the importance of red blood cells (RBCs)?",
+    choices: [
+      "They give color to body cells",
+      "They bring oxygen to individual cells of the body",
+      "They energize the other components of the blood",
+      "They thicken the blood as they circulate"
+    ],
+    correct: "They bring oxygen to individual cells of the body",
+    analysis: {
+      correct: "Red blood cells transport oxygen using hemoglobin.",
+      wrong: "The other options do not describe the main function of RBCs."
+    }
+  },
+  {
+    question: "What is the purpose of the aortic valve that separates the left ventricle from the aorta?",
+    choices: [
+      "To prevent blood from flowing back into the left ventricle",
+      "To prevent blood from flowing into the aorta",
+      "To push blood into the left ventricle",
+      "To push blood into the aorta"
+    ],
+    correct: "To prevent blood from flowing back into the left ventricle",
+    analysis: {
+      correct: "The aortic valve prevents backflow of blood into the left ventricle.",
+      wrong: "Valves do not push blood; they prevent backflow."
+    }
+  },
+  {
+    question: "Which type of blood vessel carries blood away from the heart?",
+    choices: ["Vein", "Artery", "Capillary", "Arteriole"],
+    correct: "Artery",
+    analysis: {
+      correct: "Arteries carry blood away from the heart to different parts of the body.",
+      wrong: "Veins carry blood toward the heart, capillaries allow exchange, and arterioles are smaller branches of arteries."
+    }
+  },
+  {
+    question: "What causes the bright red color of the blood as it flows from the lungs to the heart?",
+    choices: ["Oxygen", "Carbon dioxide", "Gastric juice", "Amylase"],
+    correct: "Oxygen",
+    analysis: {
+      correct: "Oxygen binds to hemoglobin, giving blood its bright red color.",
+      wrong: "Carbon dioxide is associated with darker blood; gastric juice and amylase are digestive substances."
+    }
+  },
+  {
+    question: "Which of the following blood components protect us from disease-causing germs?",
+    choices: ["Lungs", "Capillaries", "RBCs", "WBCs"],
+    correct: "WBCs",
+    analysis: {
+      correct: "White blood cells (WBCs) fight infections and protect the body from germs.",
+      wrong: "RBCs carry oxygen, capillaries are blood vessels, and lungs are respiratory organs."
+    }
+  },
+  {
+    question: "What happens when a cut occurs in a blood vessel?",
+    choices: [
+      "You would bleed to death",
+      "A scab will form on the skin surface",
+      "Platelets stick to the edges of the cut and to one another, forming a plug",
+      "WBCs ward off dirt"
+    ],
+    correct: "Platelets stick to the edges of the cut and to one another, forming a plug",
+    analysis: {
+      correct: "Platelets help in blood clotting by forming a plug at the site of injury.",
+      wrong: "Scab formation comes later; WBCs fight infection but do not stop bleeding."
+    }
+  },
+  {
+    question: "Which of the following describes the pericardium?",
+    choices: [
+      "Membrane-containing fluid that reduces friction between the surrounding organs when the heart beats",
+      "Smooth muscle that relaxes the heart",
+      "Epithelial tissue covering the heart",
+      "Membrane that increases friction between the heart and surrounding organs when breathing"
+    ],
+    correct: "Membrane-containing fluid that reduces friction between the surrounding organs when the heart beats",
+    analysis: {
+      correct: "The pericardium is a sac that contains fluid to reduce friction as the heart beats.",
+      wrong: "It does not increase friction, nor is it muscle tissue."
+    }
+  },
+  {
+    question: "Fluid between the tissues is known as ____.",
+    choices: [
+      "Intra, Inter, Re",
+      "Fluid, Titial, Inters",
+      "Blood, Vessel, Flow",
+      "Plasma, Serum, Clot"
+    ],
+    correct: "Fluid, Titial, Inters",
+    analysis: {
+      correct: "Interstitial fluid refers to the fluid found between body tissues.",
+      wrong: "The other choices do not correctly describe fluid between tissues."
+    }
+  },
+  {
+    question: "Fraction of erythrocytes in the total blood volume is called ____.",
+    choices: ["Ana, log, ous", "Hema, to, crit", "Re, cur, my", "Car, di, ac"],
+    correct: "Hema, to, crit",
+    analysis: {
+      correct: "Hematocrit is the proportion of red blood cells in the blood.",
+      wrong: "The other terms are unrelated to blood composition."
+    }
+  },
+  {
+    question: "The smallest blood vessel where gas exchange occurs is the ____.",
+    choices: ["Rev, ana, log", "Ry, lla, capi", "Flow, to, my", "Ve, in, ous"],
+    correct: "Ry, lla, capi",
+    analysis: {
+      correct: "Capillaries are the smallest blood vessels where oxygen and carbon dioxide exchange occurs.",
+      wrong: "Veins and arteries do not directly allow gas exchange."
+    }
+  },
+  {
+    question: "Characterized by a rounded swelling in any arterial wall but usually in the aorta.",
+    choices: ["Ar, te, ry", "Inter, rela, ted", "Ane, ury, sm", "Ve, in, ous"],
+    correct: "Ane, ury, sm",
+    analysis: {
+      correct: "An aneurysm is a bulging or swelling in an artery, often in the aorta.",
+      wrong: "The other choices do not describe arterial wall swelling."
+    }
+  },
+  {
+    question: "The liquid component of blood is called ____.",
+    choices: ["Pl, as, ma", "Ag, ma, crit", "Ate, let, ur", "Ser, um, clot"],
+    correct: "Pl, as, ma",
+    analysis: {
+      correct: "Plasma is the liquid portion of blood that carries cells and nutrients.",
+      wrong: "The other options are not the main liquid component of blood."
+    }
+  },
+  {
+    question: "Which option best represents capillaries in the circulatory system using a road analogy?",
+    choices: [
+      "Main highways leaving the city",
+      "Main highways entering the city",
+      "Narrow roads going directly to houses",
+      "Distribution center"
+    ],
+    correct: "Narrow roads going directly to houses",
+    analysis: {
+      correct: "Capillaries are very narrow blood vessels that allow exchange of materials directly with body cells.",
+      wrong: "Highways and distribution centers represent larger transport structures, not exchange sites."
+    }
+  },
+  {
+    question: "Which analogy best represents the heart in the circulatory system?",
+    choices: [
+      "Roads going to the house",
+      "Roads exiting the house",
+      "Narrow roads going to the house",
+      "Distribution center"
+    ],
+    correct: "Distribution center",
+    analysis: {
+      correct: "The heart acts like a distribution center by pumping and directing blood throughout the body.",
+      wrong: "Roads represent blood vessels, not the pumping organ."
+    }
+  },
+  {
+    question: "Which analogy best represents arteries in the circulatory system?",
+    choices: [
+      "Roads going to the house",
+      "Roads exiting the house",
+      "Narrow roads going to the house",
+      "Distribution center"
+    ],
+    correct: "Roads going to the house",
+    analysis: {
+      correct: "Arteries carry blood away from the heart, similar to roads going toward destinations.",
+      wrong: "Veins return blood, and capillaries are much smaller pathways."
+    }
+  },
+  {
+    question: "Which analogy best represents veins in the circulatory system?",
+    choices: [
+      "Roads going to the house",
+      "Roads exiting the house",
+      "Narrow roads going to the house",
+      "Distribution center"
+    ],
+    correct: "Roads exiting the house",
+    analysis: {
+      correct: "Veins return blood back to the heart, similar to roads leading away from houses.",
+      wrong: "Arteries carry blood away from the heart, not toward it."
+    }
+  },
+  {
+    question: "Which option best represents organs in the circulatory system analogy?",
+    choices: ["House", "Truck", "Goods", "Money"],
+    correct: "House",
+    analysis: {
+      correct: "Organs are the destinations where blood delivers oxygen and nutrients, similar to houses.",
+      wrong: "Trucks, goods, and money represent transport or materials, not destinations."
+    }
+  },
+  {
+    question: "What is most likely to happen if a person eats fatty foods every day?",
+    choices: [
+      "Fatty deposits may block arteries and cause circulatory diseases",
+      "The circulatory system will function more efficiently",
+      "Blood vessels will widen permanently",
+      "The heart will pump less blood"
+    ],
+    correct: "Fatty deposits may block arteries and cause circulatory diseases",
+    analysis: {
+      correct: "Excess fat can accumulate in arteries, increasing the risk of heart disease and stroke.",
+      wrong: "Fatty foods do not improve circulation or heart efficiency."
+    }
+  },
+  {
+    question: "Why is internal bleeding dangerous for a person with hemophilia?",
+    choices: [
+      "Fat blocks the arteries",
+      "Lack of clotting factors prevents blood from clotting properly",
+      "The heart pumps blood too fast",
+      "Blood vessels burst easily"
+    ],
+    correct: "Lack of clotting factors prevents blood from clotting properly",
+    analysis: {
+      correct: "Hemophilia involves missing clotting factors, making bleeding difficult to stop.",
+      wrong: "The condition is related to clotting, not fat intake or heart speed."
+    }
+  },
+  {
+    question: "How can diseases related to the circulatory system be prevented?",
+    choices: [
+      "Eat fatty foods regularly",
+      "Avoid physical activity",
+      "Practice a healthy lifestyle",
+      "Increase salt intake"
+    ],
+    correct: "Practice a healthy lifestyle",
+    analysis: {
+      correct: "Regular exercise, balanced diet, and avoiding smoking help maintain circulatory health.",
+      wrong: "Unhealthy habits increase the risk of circulatory diseases."
+    }
+  },
+  {
+    question: "The male and female reproductive systems have the following functions EXCEPT:",
+    choices: [
+      "Producing germ cells",
+      "Nourishing and transporting sex cells",
+      "Regulating blood circulation",
+      "Supporting fertilization"
+    ],
+    correct: "Regulating blood circulation",
+    analysis: {
+      correct: "Blood circulation is primarily the function of the circulatory system, not the reproductive system.",
+      wrong: "Producing, nourishing, and transporting sex cells are key reproductive functions."
+    }
+  },
+  {
+    question: "What is the sensitive, enlarged end of the penis?",
+    choices: [
+      "Scrotum",
+      "Glans penis",
+      "Penile urethra",
+      "Shaft"
+    ],
+    correct: "Glans penis",
+    analysis: {
+      correct: "The glans penis is the enlarged, sensitive tip of the penis.",
+      wrong: "The scrotum holds testes, the urethra is a passageway, and the shaft forms the body of the penis."
+    }
+  },
+  {
+    question: "Which is the correct pathway of sperm cells in the male reproductive tract (from inside to outside)?",
+    choices: [
+      "Epididymis → ductus deferens → urethra → ejaculatory duct",
+      "Ejaculatory duct → epididymis → ductus deferens → urethra",
+      "Ductus deferens → epididymis → ejaculatory duct → urethra",
+      "Epididymis → ductus deferens → ejaculatory duct → urethra"
+    ],
+    correct: "Epididymis → ductus deferens → ejaculatory duct → urethra",
+    analysis: {
+      correct: "Sperm mature in the epididymis, travel through the ductus deferens, pass the ejaculatory duct, and exit via the urethra.",
+      wrong: "The other options place organs in the incorrect sequence."
+    }
+  },
+  {
+    question: "Where do maturing sperm gain their ability to swim?",
+    choices: [
+      "Ejaculatory duct",
+      "Ductus deferens",
+      "Epididymis",
+      "Urethra"
+    ],
+    correct: "Epididymis",
+    analysis: {
+      correct: "Sperm gain motility and mature in the epididymis.",
+      wrong: "The other structures mainly transport sperm but do not mature them."
+    }
+  },
+  {
+    question: "Which of the following fluids is NOT a component of semen?",
+    choices: [
+      "Epididymal fluid",
+      "Seminal fluid",
+      "Bulbourethral fluid",
+      "Prostatic fluid"
+    ],
+    correct: "Epididymal fluid",
+    analysis: {
+      correct: "Epididymal fluid helps sperm maturation but is not part of semen.",
+      wrong: "Seminal, prostatic, and bulbourethral fluids contribute to semen."
+    }
+  },
+  {
+    question: "Approximately what percentage of the fluid volume of semen is produced by the seminal vesicles?",
+    choices: [
+      "10%",
+      "30%",
+      "60%",
+      "75%"
+    ],
+    correct: "60%",
+    analysis: {
+      correct: "Seminal vesicles contribute about 60% of the total semen volume.",
+      wrong: "The other values underestimate or overestimate this contribution."
+    }
+  },
+  {
+    question: "Which of the following is an endocrine function of the testes?",
+    choices: [
+      "Testosterone production",
+      "Ovum fertilization",
+      "Sperm production",
+      "Estrogen production"
+    ],
+    correct: "Testosterone production",
+    analysis: {
+      correct: "The testes secrete testosterone, a hormone, making this an endocrine function.",
+      wrong: "Sperm production is reproductive, not endocrine; estrogen and ovum fertilization are female-related."
+    }
+  },
+  {
+    question: "Which part is considered the \"sperm-forming factories\" of the male reproductive system?",
+    choices: [
+      "Interstitial cells",
+      "Epididymis",
+      "Bulbourethral gland",
+      "Seminiferous tubules"
+    ],
+    correct: "Seminiferous tubules",
+    analysis: {
+      correct: "Seminiferous tubules are the site of sperm production in the testes.",
+      wrong: "The other structures have different supporting or secretory roles."
+    }
+  },
+  {
+    question: "What is the function of the milky-colored fluid secreted by the prostate gland?",
+    choices: [
+      "Nourish the sperm",
+      "Activate the sperm",
+      "Cleanse the urethra",
+      "Neutralize urine"
+    ],
+    correct: "Activate the sperm",
+    analysis: {
+      correct: "Prostatic fluid enhances sperm motility and activity.",
+      wrong: "Nourishing sperm is mainly the role of seminal vesicle fluid."
+    }
+  },
+  {
+    question: "Where does implantation of the zygote (fertilized egg) occur?",
+    choices: [
+      "Ovary",
+      "Uterine tubes",
+      "Uterus",
+      "Vagina"
+    ],
+    correct: "Uterus",
+    analysis: {
+      correct: "Implantation occurs in the lining of the uterus.",
+      wrong: "Fertilization happens in the uterine tubes, not implantation."
     }
   }
 ];
@@ -69,6 +896,7 @@ function startQuiz() {
     alert("Please enter your name.");
     return;
   }
+
   localStorage.setItem("studentName", name);
   document.getElementById("start-screen").classList.add("hidden");
   document.getElementById("quiz-screen").classList.remove("hidden");
@@ -78,6 +906,7 @@ function startQuiz() {
 function loadQuestion() {
   const q = questions[currentIndex];
   document.getElementById("question-text").innerText = q.question;
+
   const choicesDiv = document.getElementById("choices");
   choicesDiv.innerHTML = "";
 
@@ -138,7 +967,7 @@ function showAnalysis() {
     const div = document.createElement("div");
     div.innerHTML = `
       <p><strong>Q${i + 1}:</strong> ${item.question}</p>
-      <p>Correct Answer: ${item.correct}</p>
+      <p><strong>Correct Answer:</strong> ${item.correct}</p>
       <p>${item.analysis.correct}</p>
       <hr>
     `;
