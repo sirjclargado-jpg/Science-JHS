@@ -2,19 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Human Biology Quiz</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Human Biology Quiz (Grade 7–10)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    .choice {
+      margin: 8px 0;
+      display: block;
+      cursor: pointer;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    .correct {
+      color: green;
+    }
+    .wrong {
+      color: red;
+    }
+  </style>
 </head>
 <body>
 
+<h1>Human Biology Quiz (Grade 7–10)</h1>
+
 <div id="start-screen">
-  <h1>Human Biology Quiz (Grade 7–10)</h1>
   <input type="text" id="studentName" placeholder="Enter your name">
+  <br><br>
   <button onclick="startQuiz()">Start Quiz</button>
 </div>
 
 <div id="quiz-screen" class="hidden">
-  <h2 id="question-text"></h2>
+  <h3 id="question-text"></h3>
   <div id="choices"></div>
   <button onclick="nextQuestion()">Next</button>
 </div>
@@ -22,50 +48,121 @@
 <div id="result-screen" class="hidden">
   <h2>Quiz Completed ✅</h2>
   <p id="final-score"></p>
+  <h3>Item Analysis</h3>
   <div id="analysis"></div>
 </div>
 
-<script src="questions.js"></script>
-<script src="script.js"></script>
-</body>
-</html>
-body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
-
-.hidden {
-  display: none;
-}
-
-button {
-  margin-top: 15px;
-  padding: 10px 15px;
-  cursor: pointer;
-}
-
-.choice {
-  display: block;
-  margin: 8px 0;
-}
+<script>
 let currentIndex = 0;
 let score = 0;
 let studentAnswers = [];
-let studentName = "";
 
+const questions = [
+  {
+    question: "It is the infection in the liver that causes it to become inflamed.",
+    choices: ["Appendicitis", "Bulimia", "Diarrhea", "Hepatitis"],
+    correct: "Hepatitis",
+    analysis: {
+      correct: "Hepatitis is an infection of the liver, usually caused by a virus.",
+      wrong: "Appendicitis affects the appendix, bulimia is an eating disorder, and diarrhea is a digestive condition."
+    }
+  },
+  {
+    question: "It is the inflammation of the lining of the stomach.",
+    choices: ["Appendicitis", "Bulimia", "Diarrhea", "Gastritis"],
+    correct: "Gastritis",
+    analysis: {
+      correct: "Gastritis refers to inflammation of the stomach lining.",
+      wrong: "The other choices involve different organs or conditions."
+    }
+  },
+  {
+    question: "It is the increase in the frequency of loose, watery stools compared to normal.",
+    choices: ["Appendicitis", "Bulimia", "Diarrhea", "Hepatitis"],
+    correct: "Diarrhea",
+    analysis: {
+      correct: "Diarrhea is characterized by frequent, loose, watery stools.",
+      wrong: "The other choices are not defined by loose stools."
+    }
+  },
+  {
+    question: "It is an eating disorder characterized by food binging and then purging.",
+    choices: ["Appendicitis", "Bulimia", "Diarrhea", "Hepatitis"],
+    correct: "Bulimia",
+    analysis: {
+      correct: "Bulimia involves binge eating followed by purging behaviors.",
+      wrong: "The other choices are medical conditions, not eating disorders."
+    }
+  },
+  {
+    question: "It is a condition in which the small pouch-like organ attached to the large intestine becomes inflamed and swollen.",
+    choices: ["Appendicitis", "Bulimia", "Diarrhea", "Gastritis"],
+    correct: "Appendicitis",
+    analysis: {
+      correct: "Appendicitis is inflammation of the appendix.",
+      wrong: "The other conditions involve different organs."
+    }
+  },
+  {
+    question: "It is the excessive production of urine resulting in an increased frequency of urination.",
+    choices: ["Kidney stones", "UTI", "Kidney failure", "Polyuria"],
+    correct: "Polyuria",
+    analysis: {
+      correct: "Polyuria refers to abnormally large volumes of urine.",
+      wrong: "Kidney stones, UTI, and kidney failure do not primarily cause excessive urine production."
+    }
+  },
+  {
+    question: "It is the infection in the urinary tract caused by bacteria.",
+    choices: ["Kidney stones", "UTI", "Kidney failure", "Uremia"],
+    correct: "UTI",
+    analysis: {
+      correct: "UTI stands for urinary tract infection caused by bacteria.",
+      wrong: "The other conditions are not bacterial infections of the urinary tract."
+    }
+  },
+  {
+    question: "It is the buildup of waste products in the blood due to kidney dysfunction.",
+    choices: ["Kidney stones", "UTI", "Kidney failure", "Uremia"],
+    correct: "Uremia",
+    analysis: {
+      correct: "Uremia occurs when waste products accumulate in the blood.",
+      wrong: "The other choices describe different kidney-related conditions."
+    }
+  },
+  {
+    question: "It is the formation of hard mineral and salt deposits in the kidneys.",
+    choices: ["Kidney stones", "UTI", "Kidney failure", "Polyuria"],
+    correct: "Kidney stones",
+    analysis: {
+      correct: "Kidney stones are hard deposits made of minerals and salts.",
+      wrong: "The other options do not involve mineral deposits."
+    }
+  },
+  {
+    question: "It is the inability of the kidneys to adequately filter waste and regulate fluid balance.",
+    choices: ["Kidney stones", "UTI", "Kidney failure", "Uremia"],
+    correct: "Kidney failure",
+    analysis: {
+      correct: "Kidney failure occurs when the kidneys can no longer function properly.",
+      wrong: "Uremia is a result of kidney failure, not the cause."
+    }
+  }
+];
+</script>
+
+/* ===============================
+   FUNCTIONS
+================================ */
 function startQuiz() {
-  studentName = document.getElementById("studentName").value.trim();
-
-  if (!studentName) {
+  const name = document.getElementById("studentName").value.trim();
+  if (name === "") {
     alert("Please enter your name.");
     return;
   }
-
-  localStorage.setItem("studentName", studentName);
-
+  localStorage.setItem("studentName", name);
   document.getElementById("start-screen").classList.add("hidden");
   document.getElementById("quiz-screen").classList.remove("hidden");
-
   loadQuestion();
 }
 
@@ -76,30 +173,35 @@ function loadQuestion() {
   const choicesDiv = document.getElementById("choices");
   choicesDiv.innerHTML = "";
 
-  for (let key in q.choices) {
+  q.choices.forEach(choice => {
     const label = document.createElement("label");
+    label.className = "choice";
     label.innerHTML = `
-      <input type="radio" name="choice" value="${key}">
-      ${key}. ${q.choices[key]}
+      <input type="radio" name="choice" value="${choice}">
+      ${choice}
     `;
     choicesDiv.appendChild(label);
-  }
+  });
 }
 
 function nextQuestion() {
   const selected = document.querySelector('input[name="choice"]:checked');
-
   if (!selected) {
     alert("Please select an answer.");
     return;
   }
 
   const answer = selected.value;
-  studentAnswers.push(answer);
+  const q = questions[currentIndex];
 
-  if (answer === questions[currentIndex].correct) {
-    score++;
-  }
+  studentAnswers.push({
+    question: q.question,
+    selected: answer,
+    correct: q.correct,
+    analysis: q.analysis
+  });
+
+  if (answer === q.correct) score++;
 
   currentIndex++;
 
@@ -111,432 +213,31 @@ function nextQuestion() {
 }
 
 function finishQuiz() {
-  localStorage.setItem("completed", "true");
-  localStorage.setItem("score", score);
-
   document.getElementById("quiz-screen").classList.add("hidden");
   document.getElementById("result-screen").classList.remove("hidden");
 
   document.getElementById("final-score").innerText =
-    `${studentName}, your score is ${score} out of ${questions.length}`;
+    `${localStorage.getItem("studentName")}, your score is ${score} out of ${questions.length}`;
 
   showAnalysis();
 }
 
 function showAnalysis() {
   const analysisDiv = document.getElementById("analysis");
-  analysisDiv.innerHTML = "<h3>Item Analysis</h3>";
+  analysisDiv.innerHTML = "";
 
-  questions.forEach((q, i) => {
+  studentAnswers.forEach((item, i) => {
     const div = document.createElement("div");
     div.innerHTML = `
-      <p><strong>Q${i + 1}:</strong> ${q.question}</p>
-      <p><strong>Correct Answer:</strong> ${q.correct}</p>
-      <p>${q.analysis.correct}</p>
+      <p><strong>Q${i + 1}:</strong> ${item.question}</p>
+      <p>Correct Answer: <span class="correct">${item.correct}</span></p>
+      <p>${item.analysis.correct}</p>
       <hr>
     `;
     analysisDiv.appendChild(div);
   });
 }
+</script>
 
-const questions = [
-  {
-    id: 1,
-    question: "It is the infection in the liver that causes it to become inflamed.",
-    choices: {
-      A: "Appendicitis",
-      B: "Bulimia",
-      C: "Diarrhea",
-      D: "Hepatitis"
-    },
-    correct: "D",
-    analysis: {
-      correct: "Hepatitis is an inflammation of the liver, usually caused by a viral infection.",
-      wrong: {
-        A: "Appendicitis is inflammation of the appendix, not the liver.",
-        B: "Bulimia is an eating disorder, not an infection.",
-        C: "Diarrhea is a digestive condition affecting bowel movements."
-      }
-    }
-  },
-
-  {
-    id: 2,
-    question: "It is the inflammation of the lining of the stomach.",
-    choices: {
-      A: "Appendicitis",
-      B: "Bulimia",
-      C: "Diarrhea",
-      D: "Gastritis"
-    },
-    correct: "D",
-    analysis: {
-      correct: "Gastritis refers to inflammation of the stomach lining.",
-      wrong: {
-        A: "Appendicitis affects the appendix, not the stomach.",
-        B: "Bulimia is a mental health eating disorder.",
-        C: "Diarrhea involves frequent loose stools, not stomach lining inflammation."
-      }
-    }
-  },
-
-  {
-    id: 3,
-    question: "It is the increase in the frequency of loose, watery stools compared to normal.",
-    choices: {
-      A: "Appendicitis",
-      B: "Bulimia",
-      C: "Diarrhea",
-      D: "Hepatitis"
-    },
-    correct: "C",
-    analysis: {
-      correct: "Diarrhea is characterized by frequent, loose, and watery stools.",
-      wrong: {
-        A: "Appendicitis involves abdominal pain due to appendix inflammation.",
-        B: "Bulimia involves binge eating and purging behaviors.",
-        D: "Hepatitis affects the liver, not bowel movements."
-      }
-    }
-  },
-
-  {
-    id: 4,
-    question: "It is an eating disorder characterized by food binging and then purging.",
-    choices: {
-      A: "Appendicitis",
-      B: "Bulimia",
-      C: "Diarrhea",
-      D: "Hepatitis"
-    },
-    correct: "B",
-    analysis: {
-      correct: "Bulimia is an eating disorder involving binge eating followed by purging.",
-      wrong: {
-        A: "Appendicitis is a physical inflammation, not a behavioral disorder.",
-        C: "Diarrhea is a digestive condition, not an eating disorder.",
-        D: "Hepatitis is a liver infection."
-      }
-    }
-  },
-
-  {
-    id: 5,
-    question: "It is a condition in which the small pouch-like organ attached to the large intestine becomes inflamed and swollen.",
-    choices: {
-      A: "Appendicitis",
-      B: "Bulimia",
-      C: "Diarrhea",
-      D: "Gastritis"
-    },
-    correct: "A",
-    analysis: {
-      correct: "Appendicitis is inflammation of the appendix, a small pouch attached to the large intestine.",
-      wrong: {
-        B: "Bulimia is an eating disorder.",
-        C: "Diarrhea involves loose stools, not organ inflammation.",
-        D: "Gastritis affects the stomach lining."
-      }
-    }
-  },
-
-  {
-    id: 6,
-    question: "It is the excessive production of urine resulting in an increased frequency of urination.",
-    choices: {
-      A: "Kidney stones",
-      B: "UTI",
-      C: "Kidney failure",
-      D: "Polyuria"
-    },
-    correct: "D",
-    analysis: {
-      correct: "Polyuria refers to the production of abnormally large volumes of urine.",
-      wrong: {
-        A: "Kidney stones cause pain, not excessive urine production.",
-        B: "UTI is an infection of the urinary tract.",
-        C: "Kidney failure reduces urine production, not increases it."
-      }
-    }
-  },
-
-  {
-    id: 7,
-    question: "It is the infection in the urinary tract caused by bacteria.",
-    choices: {
-      A: "Kidney stones",
-      B: "UTI",
-      C: "Kidney failure",
-      D: "Uremia"
-    },
-    correct: "B",
-    analysis: {
-      correct: "UTI stands for urinary tract infection, commonly caused by bacteria.",
-      wrong: {
-        A: "Kidney stones are solid mineral deposits.",
-        C: "Kidney failure is loss of kidney function.",
-        D: "Uremia is the buildup of waste products in the blood."
-      }
-    }
-  },
-
-  {
-    id: 8,
-    question: "It is the buildup of waste products in the blood due to kidney dysfunction.",
-    choices: {
-      A: "Kidney stones",
-      B: "UTI",
-      C: "Kidney failure",
-      D: "Uremia"
-    },
-    correct: "D",
-    analysis: {
-      correct: "Uremia occurs when waste products accumulate in the blood due to poor kidney function.",
-      wrong: {
-        A: "Kidney stones are solid deposits in the kidneys.",
-        B: "UTI is an infection, not waste buildup.",
-        C: "Kidney failure is the condition that may lead to uremia."
-      }
-    }
-  },
-
-  {
-    id: 9,
-    question: "It is the inability of the kidneys to adequately filter waste and regulate fluid balance.",
-    choices: {
-      A: "Kidney stones",
-      B: "UTI",
-      C: "Kidney failure",
-      D: "Uremia"
-    },
-    correct: "C",
-    analysis: {
-      correct: "Kidney failure occurs when the kidneys can no longer filter wastes or balance fluids properly.",
-      wrong: {
-        A: "Kidney stones are mineral deposits.",
-        B: "UTI is an infection of the urinary tract.",
-        D: "Uremia is a result of kidney failure, not the cause."
-      }
-    }
-  },
-
-  {
-    id: 10,
-    question: "Find the relationship between the two given pairs of words and choose the correct alternative. Kidneys : urea  Liver : ____",
-    choices: {
-      A: "Uric acid",
-      B: "Bile pigments",
-      C: "Minerals",
-      D: "Creatinine"
-    },
-    correct: "B",
-    analysis: {
-      correct: "The liver produces bile pigments just as the kidneys excrete urea.",
-      wrong: {
-        A: "Uric acid is mainly excreted by the kidneys.",
-        C: "Minerals are regulated by kidneys, not specifically produced by the liver.",
-        D: "Creatinine is a waste product filtered by the kidneys."
-      }
-    }
-  },
-
-  {
-    id: 11,
-    question: "Find the relationship between the two given pairs of words and choose the correct alternative. Breaks down food and absorbs nutrients : digestive system Releases waste products through urine and feces : ________",
-    choices: {
-      A: "Excretory system",
-      B: "Circulatory system",
-      C: "Endocrine system",
-      D: "Respiratory system"
-    },
-    correct: "A",
-    analysis: {
-      correct: "The excretory system is responsible for removing waste products from the body through urine and feces.",
-      wrong: {
-        B: "The circulatory system transports blood, oxygen, and nutrients.",
-        C: "The endocrine system releases hormones.",
-        D: "The respiratory system is involved in breathing and gas exchange."
-      }
-    }
-  },
-
-  {
-    id: 12,
-    question: "Find the relationship between the two given pairs of words and choose the correct alternative. Skin : sweating Kidneys : ________",
-    choices: {
-      A: "Defecation",
-      B: "Respiration",
-      C: "Urination",
-      D: "Transpiration"
-    },
-    correct: "C",
-    analysis: {
-      correct: "The kidneys remove waste by producing urine, just as the skin removes waste through sweating.",
-      wrong: {
-        A: "Defecation is the removal of solid waste through the digestive system.",
-        B: "Respiration involves breathing.",
-        D: "Transpiration occurs in plants, not humans."
-      }
-    }
-  },
-
-  {
-    id: 13,
-    question: "Find the relationship between the two given pairs of words and choose the correct alternative. Filtration : plasma-like filtrate Secretion : ________",
-    choices: {
-      A: "Water",
-      B: "Blood",
-      C: "Carbon dioxide",
-      D: "Urine"
-    },
-    correct: "D",
-    analysis: {
-      correct: "Secretion in the kidneys helps form urine by adding substances into the filtrate.",
-      wrong: {
-        A: "Water is only a component of urine.",
-        B: "Blood is filtered, not produced by secretion.",
-        C: "Carbon dioxide is removed mainly by the lungs."
-      }
-    }
-  },
-
-  {
-    id: 14,
-    question: "Find the relationship between the two given pairs of words and choose the correct alternative. More or less 2% of urine : urea More or less 96% of urine : ________",
-    choices: {
-      A: "Blood",
-      B: "Uric acid",
-      C: "Water",
-      D: "Plasma"
-    },
-    correct: "C",
-    analysis: {
-      correct: "Urine is composed mostly of water, making up about 96% of its content.",
-      wrong: {
-        A: "Blood is not a component of urine.",
-        B: "Uric acid is present only in small amounts.",
-        D: "Plasma is found in blood, not urine."
-      }
-    }
-  },
-
-  {
-    id: 15,
-    question: "What is the primary function of the excretory system in the human body?",
-    choices: {
-      A: "To circulate blood",
-      B: "To eliminate waste products",
-      C: "To digest food",
-      D: "To absorb nutrients"
-    },
-    correct: "B",
-    analysis: {
-      correct: "The main function of the excretory system is to remove waste products from the body.",
-      wrong: {
-        A: "Blood circulation is the role of the circulatory system.",
-        C: "Digestion is the function of the digestive system.",
-        D: "Nutrient absorption occurs in the digestive system."
-      }
-    }
-  },
-
-  {
-    id: 16,
-    question: "Which organs are primarily involved in the excretory system?",
-    choices: {
-      A: "Heart and lungs",
-      B: "Kidneys, lungs, liver, skin, and large intestine",
-      C: "Stomach and intestines",
-      D: "Brain and spinal cord"
-    },
-    correct: "B",
-    analysis: {
-      correct: "The excretory system includes organs that remove wastes, such as the kidneys, lungs, liver, skin, and large intestine.",
-      wrong: {
-        A: "The heart and lungs mainly support circulation and respiration.",
-        C: "The stomach and intestines are part of digestion.",
-        D: "The brain and spinal cord belong to the nervous system."
-      }
-    }
-  },
-
-  {
-    id: 17,
-    question: "How do kidneys filter waste from the blood?",
-    choices: {
-      A: "Through digestion",
-      B: "By reabsorbing all substances",
-      C: "Through complex processes including filtration, reabsorption, and secretion",
-      D: "By directly excreting toxins"
-    },
-    correct: "C",
-    analysis: {
-      correct: "The kidneys filter blood through filtration, reabsorption, and secretion to form urine.",
-      wrong: {
-        A: "Digestion occurs in the digestive system.",
-        B: "Not all substances are reabsorbed; wastes are removed.",
-        D: "Waste removal is a step-by-step process, not direct excretion."
-      }
-    }
-  },
-
-  {
-    id: 18,
-    question: "What substances do the kidneys primarily excrete?",
-    choices: {
-      A: "Water and glucose",
-      B: "Oxygen and carbon dioxide",
-      C: "Urea, uric acid, and creatinine",
-      D: "Vitamins and minerals"
-    },
-    correct: "C",
-    analysis: {
-      correct: "The kidneys primarily remove nitrogenous wastes such as urea, uric acid, and creatinine.",
-      wrong: {
-        A: "Glucose is normally reabsorbed, not excreted.",
-        B: "Oxygen and carbon dioxide are exchanged in the lungs.",
-        D: "Vitamins and minerals are usually conserved by the body."
-      }
-    }
-  },
-
-  {
-    id: 19,
-    question: "Why is it important for the body to remove waste products?",
-    choices: {
-      A: "To gain energy",
-      B: "To maintain homeostasis",
-      C: "To increase body weight",
-      D: "To stimulate growth"
-    },
-    correct: "B",
-    analysis: {
-      correct: "Removing waste products helps maintain internal balance or homeostasis.",
-      wrong: {
-        A: "Energy is obtained from food, not waste removal.",
-        C: "Waste removal does not increase body weight.",
-        D: "Growth is regulated by hormones and nutrition."
-      }
-    }
-  },
-
-  {
-    id: 20,
-    question: "What is the first major step in the human digestive process that involves placing food into the mouth?",
-    choices: {
-      A: "Absorption",
-      B: "Ingestion",
-      C: "Digestion",
-      D: "Propulsion"
-    },
-    correct: "B",
-    analysis: {
-      correct: "Ingestion is the process of taking food into the mouth.",
-      wrong: {
-        A: "Absorption occurs in the intestines.",
-        C: "Digestion is the breakdown of food.",
-        D: "Propulsion moves food through the digestive tract."
-      }
-    }
-  }, 
-];
+</body>
+</html>
